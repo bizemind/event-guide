@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Event Guide | Creatis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1714;
+  --parchment:#f7f3ec;
+  --warm:#ede7db;
+  --accent:#b5703a;
+  --accent-pale:#f0e6d8;
+  --border:#d8cfc3;
+  --muted:#8a7f74;
+  --faint:#c4b9ae;
+  --surface:#fdfaf6;
+  --r:10px;
+}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--parchment);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.65;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c4b9ae' fill-opacity='0.13'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.app{max-width:600px;margin:0 auto;padding:2rem 1rem 4rem}
+
+/* Header */
+.site-header{text-align:center;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.site-header .eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem}
+.site-header h1{font-size:clamp(32px,8vw,48px);font-weight:300;letter-spacing:-.5px;line-height:1.1}
+.site-header h1 em{font-style:italic;color:var(--accent)}
+.site-header .sub{font-size:15px;color:var(--muted);margin-top:.6rem;font-weight:300}
+
+/* Nav pills */
+.nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+.nav-pill{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 14px;border-radius:99px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;
+  transition:all .18s;-webkit-tap-highlight-color:transparent;
+}
+.nav-pill:hover{border-color:var(--accent);color:var(--accent)}
+.nav-pill.active{background:var(--ink);color:var(--parchment);border-color:var(--ink)}
+
+/* Event section */
+.event-section{margin-bottom:1.25rem}
+.event-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;display:none;
+}
+.event-card.visible{display:block;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Event hero */
+.event-hero{
+  padding:1.75rem 1.5rem 1.25rem;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.event-hero::before{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:120px;height:120px;border-radius:50%;opacity:.08;
+}
+.event-hero.intimate::before{background:radial-gradient(circle,#b5703a,transparent)}
+.event-hero.soiree::before{background:radial-gradient(circle,#5a8c5e,transparent)}
+.event-hero.grand::before{background:radial-gradient(circle,#3a5a8c,transparent)}
+.event-hero.workshop::before{background:radial-gradient(circle,#8c5a3a,transparent)}
+
+.event-num{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;
+  color:var(--faint);text-transform:uppercase;margin-bottom:.4rem;
+}
+.event-title{font-size:clamp(22px,5vw,30px);font-weight:300;letter-spacing:-.3px}
+.event-title em{font-style:italic;color:var(--accent)}
+.event-tagline{font-size:14px;color:var(--muted);margin-top:.4rem;font-family:'DM Mono',monospace;font-weight:300}
+
+/* Kit chips in hero */
+.kit-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:1rem}
+.kit-chip{
+  font-size:11px;padding:3px 10px;border-radius:99px;
+  background:var(--accent-pale);color:var(--accent);border:1px solid #dfc4a8;
+  font-family:'DM Mono',monospace;
+}
+
+/* Items */
+.items-list{padding:.75rem 1.5rem 1.25rem}
+.item{padding:.9rem 0;border-bottom:1px solid var(--border)}
+.item:last-child{border-bottom:none}
+.item-header{display:flex;align-items:flex-start;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.item-icon{
+  width:36px;height:36px;flex-shrink:0;border-radius:8px;
+  background:var(--warm);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.item-title-wrap{flex:1}
+.item-name{font-size:17px;font-weight:400}
+.item-sub{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px}
+.item-toggle{font-size:18px;color:var(--faint);margin-left:auto;transition:transform .2s;flex-shrink:0;margin-top:4px}
+.item-toggle.open{transform:rotate(45deg);color:var(--accent)}
+
+.item-body{display:none;padding-top:.75rem;padding-left:48px}
+.item-body.open{display:block}
+.item-desc{font-size:15px;color:#4a4540;line-height:1.7}
+.item-kits{margin-top:.65rem;display:flex;flex-wrap:wrap;gap:5px}
+.item-kit-tag{
+  font-size:11px;padding:3px 9px;border-radius:99px;
+  background:var(--warm);border:1px solid var(--border);color:var(--muted);
+  font-family:'DM Mono',monospace;
+  text-decoration:none;cursor:pointer;
+}
+.item-kit-tag:hover{border-color:var(--accent);color:var(--accent)}
+
+.empty{font-size:14px;color:var(--faint);text-align:center;padding:2rem 0;font-family:'DM Mono',monospace}
+
+/* Footer */
+.footer{text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.footer p{font-size:13px;color:var(--muted)}
+.footer a{color:var(--accent);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+.footer .mono{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);margin-top:.4rem}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="site-header">
+    <div class="eyebrow">One Day in November</div>
+    <h1>The <em>Event</em> Guide</h1>
+    <div class="sub">Textile directions for four kinds of gatherings</div>
+  </div>
+
+  <div class="nav" id="nav"></div>
+
+  <div id="events"></div>
+
+  <div class="footer">
+    <p>Browse individual kits at <a href="https://onedayinnovember.in" target="_blank">onedayinnovember.in</a></p>
+    <div class="mono">Built by The Creatis Stack</div>
+  </div>
+
+</div>
+
+<script>
+const EVENTS = [
+  {
+    id: "intimate",
+    num: "01",
+    label: "Intimate Dinner",
+    title: "The Intimate Dinner",
+    titleEm: "Intimate",
+    rest: " Dinner",
+    tagline: "High-touch luxury · 6–12 guests",
+    heroClass: "intimate",
+    kits: ["Fagoting-edge Napkins", "Layered Runners", "Textile Coasters", "Menu Wraps"],
+    items: [
+      {
+        icon: "🍽️",
+        name: "Signature Napkin",
+        sub: "fagoting stitch · hand-embroidered edges",
+        desc: "Premium long-staple cotton napkins finished with fagoting stitch or hand-embroidered borders. At small tables, the napkin is the first thing a guest touches — make it feel extraordinary.",
+        kits: ["Petal Embroidery Kit", "Pea Embroidery Kit", "Lemon Embroidery Kit"]
+      },
+      {
+        icon: "🪡",
+        name: "Layered Runners",
+        sub: "linen base + block-printed accent",
+        desc: "A heavy cream linen runner grounds the table. Laid over it: a narrower block-printed silk or chanderi accent runner. The layering creates depth without covering the table fully — right for an intimate setting where the wood grain should breathe.",
+        kits: ["Wild Flower Block Kit", "Cypress Block Kit", "Rose Block Kit"]
+      },
+      {
+        icon: "🔵",
+        name: "Textile Coasters",
+        sub: "circular block-printed rounds",
+        desc: "Small circular coasters block-printed with your botanical motifs. Functional and tactile — they protect surfaces while giving each place setting a considered, finished quality.",
+        kits: ["Lemon Block Kit", "Orange Block Kit", "Wild Flower Block Kit"]
+      },
+      {
+        icon: "🎀",
+        name: "Menu Wraps",
+        sub: "thin strips · leftover handcrafted fabric",
+        desc: "Narrow strips of leftover fabric — perhaps a selvage edge or a cut from your block-printed yardage — tied gently around folded menus or a bundle of cutlery. Effortless, almost accidental-looking. Guests will notice.",
+        kits: ["Sprig Block Kit", "Garland Block Set", "Hearts Block Set"]
+      }
+    ]
+  },
+  {
+    id: "soiree",
+    num: "02",
+    label: "Sunlit Soirée",
+    title: "The Sunlit Soirée",
+    titleEm: "Sunlit",
+    rest: " Soirée",
+    tagline: "Freshness · movement · garden botanicals",
+    heroClass: "soiree",
+    kits: ["Botanical Tablecloths", "Bistro Slipcovers", "Bread Basket Liners", "Parasol Accents"],
+    items: [
+      {
+        icon: "🌿",
+        name: "Botanical Tablecloths",
+        sub: "large-scale block prints · olive, coral, indigo",
+        desc: "Large format block prints in your most expressive colour runs — olive green, deep coral, raw indigo. Garden tables need scale. A single motif repeated across a full cloth at outdoor scale reads as pattern, not print.",
+        kits: ["Wild Flower Block Kit", "Sprig Block Kit", "Wave Block Kit", "Mountain Block Kit"]
+      },
+      {
+        icon: "🪑",
+        name: "Bistro Slipcovers",
+        sub: "lightweight · tied with fabric ribbon",
+        desc: "Toss-on covers for standard folding garden chairs, tied at the back with a simple self-fabric ribbon. The looseness is the point — a casual, sun-baked ease that matches the mood of outdoor dining.",
+        kits: ["Sprig Block Kit", "Lemon Block Kit", "Pea Embroidery Kit"]
+      },
+      {
+        icon: "🧺",
+        name: "Bread Basket Liners",
+        sub: "fabric liners · cohesive family-style look",
+        desc: "Fabric liners cut to drop inside wicker or rattan baskets, in the same print family as your napkins. Family-style service already creates warmth; matching linens extend that sensibility across the whole table.",
+        kits: ["Pea Embroidery Kit", "Lemon Block Kit", "Orange Block Kit"]
+      },
+      {
+        icon: "☂️",
+        name: "Parasol Accents",
+        sub: "tassels & trims · from your yardage",
+        desc: "Small textile tassels or cut fringe made from leftover block-printed yardage, tied to outdoor umbrella ribs or strung between trees. They move in a breeze. At golden hour, the prints become something else entirely.",
+        kits: ["Wild Flower Block Kit", "Wave Block Kit", "Garland Block Set"]
+      }
+    ]
+  },
+  {
+    id: "grand",
+    num: "03",
+    label: "Grand Celebration",
+    title: "The Grand Celebration",
+    titleEm: "Grand",
+    rest: " Celebration",
+    tagline: "Volume · uniformity · the big look",
+    heroClass: "grand",
+    kits: ["Full-Drop Slipcovers", "Coordinated Table Suites", "Fabric Backdrops", "Bespoke Favors"],
+    items: [
+      {
+        icon: "🎪",
+        name: "Full-Drop Slipcovers",
+        sub: "floor-length · cream linen · quiet luxury",
+        desc: "Floor-length banquet chair covers in a neutral cream linen — the kind that hides plastic or resin folding chairs completely and transforms a venue hall into something refined. The geometry does the work; no print needed here.",
+        kits: ["Coordinated Table Suites"]
+      },
+      {
+        icon: "📦",
+        name: "Coordinated Table Suites",
+        sub: "50+ matching tablecloths & napkins",
+        desc: "Bulk sets of matching tablecloths and napkins in your Archive geometric block print patterns. At scale, repetition becomes a design system. One pattern, one colour, across fifty tables: that's visual identity, not just decor.",
+        kits: ["Hearts Block Set", "Garland Block Set", "Cypress Block Kit"]
+      },
+      {
+        icon: "🖼️",
+        name: "Fabric Backdrops",
+        sub: "3–5 yard panels · cake table or photo booth",
+        desc: "Wide panels of your fabric-by-the-yard hung behind a cake table, gift table, or as a photo booth wall. Block prints at this scale become architectural. The repeat creates something that looks intentional from across a room.",
+        kits: ["Wild Flower Block Kit", "Peacock Block Kit", "Elephant Block Kit", "Tiger Block Kit"]
+      },
+      {
+        icon: "🎁",
+        name: "Bespoke Favors",
+        sub: "mini block prints · sachets · pocket squares",
+        desc: "Small take-home items — a printed pocket square, a fabric sachet filled with dried petals, a small folded pouch — made from the same print as the table setting. Guests leave with a piece of the aesthetic.",
+        kits: ["Lemon Block Kit", "Rose Block Kit", "Hearts Block Set"]
+      }
+    ]
+  },
+  {
+    id: "workshop",
+    num: "04",
+    label: "Workshop & Studio",
+    title: "The Workshop",
+    titleEm: "Workshop",
+    rest: " & Studio",
+    tagline: "Durability · process · communal creativity",
+    heroClass: "workshop",
+    kits: ["Protective Overlays", "Make-at-Home Kits", "Artisan Aprons", "Swatch Palettes"],
+    items: [
+      {
+        icon: "🪣",
+        name: "Protective Overlays",
+        sub: "hard-wearing cotton · indigo & earthy tones",
+        desc: "Heavy cotton drop cloths in dark indigo or earthy ochre — surfaces for communal printing sessions. They're designed to accumulate. Ink stains become part of the textile's story. Beautiful before the first use, and more so after.",
+        kits: ["Wild Flower Block Kit", "Sprig Block Kit"]
+      },
+      {
+        icon: "🧑‍🎨",
+        name: "Communal Make-at-Home Kits",
+        sub: "large-format · 4–6 people · shared wall hanging",
+        desc: "A scaled-up kit format designed for groups — multiple blocks, more fabric, a shared composition goal. Four to six people work on sections of a single wall hanging or table runner that only makes sense when assembled together.",
+        kits: ["Wild Flower Block Kit", "Cypress Block Kit", "Mountain Block Kit", "Wave Block Kit"]
+      },
+      {
+        icon: "👘",
+        name: "Artisan Aprons",
+        sub: "minimalist · in your handcrafted fabrics",
+        desc: "Simple, unstructured aprons cut from your handcrafted cloth — for the host and any guests joining in. Wearing the material they're working with closes the loop. The apron isn't protection; it's costume.",
+        kits: ["Sprig Block Kit", "Pea Embroidery Kit"]
+      },
+      {
+        icon: "🎨",
+        name: "Swatch Palettes",
+        sub: "fabric scraps · mood-boarding · patchwork",
+        desc: "Bundles of fabric offcuts and selvedge scraps handed to guests for mood-boarding, small patchwork, or simply feeling and comparing textures. The swatch is often the best sales tool — and the gentlest introduction to making.",
+        kits: ["Lemon Embroidery Kit", "Petal Embroidery Kit", "Hearts Block Set"]
+      }
+    ]
+  }
+];
+
+let activeId = "intimate";
+
+// Build nav
+const nav = document.getElementById("nav");
+EVENTS.forEach(ev => {
+  const btn = document.createElement("button");
+  btn.className = "nav-pill" + (ev.id === activeId ? " active" : "");
+  btn.textContent = ev.label;
+  btn.dataset.id = ev.id;
+  btn.onclick = () => {
+    activeId = ev.id;
+    document.querySelectorAll(".nav-pill").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  };
+  nav.appendChild(btn);
+});
+
+function render() {
+  const container = document.getElementById("events");
+  container.innerHTML = "";
+  const ev = EVENTS.find(e => e.id === activeId);
+  if (!ev) return;
+
+  const card = document.createElement("div");
+  card.className = "event-card visible event-section";
+
+  // Hero
+  const hero = document.createElement("div");
+  hero.className = `event-hero ${ev.heroClass}`;
+  hero.innerHTML = `
+    <div class="event-num">${ev.num} / 04</div>
+    <div class="event-title"><em>${ev.titleEm}</em>${ev.rest}</div>
+    <div class="event-tagline">${ev.tagline}</div>
+    <div class="kit-chips">${ev.kits.map(k => `<span class="kit-chip">${k}</span>`).join("")}</div>
+  `;
+  card.appendChild(hero);
+
+  // Items
+  const list = document.createElement("div");
+  list.className = "items-list";
+
+  ev.items.forEach((item, i) => {
+    const uid = `item-${ev.id}-${i}`;
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="item-header" data-uid="${uid}">
+        <div class="item-icon">${item.icon}</div>
+        <div class="item-title-wrap">
+          <div class="item-name">${item.name}</div>
+          <div class="item-sub">${item.sub}</div>
+        </div>
+        <div class="item-toggle" id="toggle-${uid}">+</div>
+      </div>
+      <div class="item-body" id="${uid}">
+        <div class="item-desc">${item.desc}</div>
+        <div class="item-kits">${item.kits.map(k => `<a class="item-kit-tag" href="https://onedayinnovember.in" target="_blank">${k}</a>`).join("")}</div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  card.appendChild(list);
+  container.appendChild(card);
+
+  // Accordion logic
+  card.querySelectorAll(".item-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const uid = header.dataset.uid;
+      const body = document.getElementById(uid);
+      const toggle = document.getElementById("toggle-" + uid);
+      const isOpen = body.classList.toggle("open");
+      toggle.classList.toggle("open", isOpen);
+      toggle.textContent = isOpen ? "+" : "+";
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
