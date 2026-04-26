@@ -249,7 +249,7 @@ const EVENTS = [
         name: "Full-Drop Slipcovers",
         sub: "floor-length · cream linen · quiet luxury",
         desc: "Floor-length banquet chair covers in a neutral cream linen — the kind that hides plastic or resin folding chairs completely and transforms a venue hall into something refined. The geometry does the work; no print needed here.",
-        kits: ["Coordinated Table Suites"]
+        kits: ["Hearts Block Set", "Garland Block Set", "Cypress Block Kit"]
       },
       {
         icon: "📦",
@@ -288,7 +288,7 @@ const EVENTS = [
       {
         icon: "🪣",
         name: "Protective Overlays",
-        sub: "achara cloth",
+        sub: "hard-wearing cotton · indigo & earthy tones",
         desc: "Heavy cotton drop cloths in dark indigo or earthy ochre — surfaces for communal printing sessions. They're designed to accumulate. Ink stains become part of the textile's story. Beautiful before the first use, and more so after.",
         kits: ["Wild Flower Block Kit", "Sprig Block Kit"]
       },
@@ -334,6 +334,15 @@ EVENTS.forEach(ev => {
   };
   nav.appendChild(btn);
 });
+
+// Custom pill — external link
+const customLink = document.createElement("a");
+customLink.className = "nav-pill";
+customLink.textContent = "Custom";
+customLink.href = "https://onedayinnovember.in/pages/bespoke-event";
+customLink.target = "_blank";
+customLink.style.textDecoration = "none";
+nav.appendChild(customLink);
 
 function render() {
   const container = document.getElementById("events");
@@ -391,7 +400,7 @@ function render() {
       const toggle = document.getElementById("toggle-" + uid);
       const isOpen = body.classList.toggle("open");
       toggle.classList.toggle("open", isOpen);
-      toggle.textContent = isOpen ? "+" : "+";
+      toggle.textContent = isOpen ? "−" : "+";
     });
   });
 }
